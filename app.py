@@ -1,4 +1,3 @@
-# com103-midterm-exam
 chore_names = ["Sweeping / Mopping", "Dishwashing", "Taking Out Trash",
                "Cleaning Bathroom", "Buying Groceries"]
 chore_frequency = ["Daily", "After meals", "Every other day", "Weekly", "Weekly"]
@@ -22,28 +21,21 @@ while True:
         continue
     break
 
-# Room number (single digit: 1-5 only)
+# Room number (numbers, letters, and punctuation allowed)
 while True:
-    raw_room = input("Room number (1-5): ").strip()
+    raw_room = input("Room number: ").strip()
     if raw_room == "":
-        print("Room number cannot be empty. Please enter a number.")
+        print("Room number cannot be empty. Please enter a room number.")
         continue
-    if len(raw_room) != 1:
-        print("Room number must be a single digit only (1-5).")
+    if raw_room == "0":
+        print("Room number cannot be 0. Please enter a valid room number.")
         continue
-    try:
-        room_number = int(raw_room)
-    except ValueError:
-        print("Invalid number. Please enter a valid single digit (1-5).")
-        continue
-    if room_number < 1 or room_number > 5:
-        print("Room number must be between 1 and 5.")
-        continue
+    room_number = raw_room.upper()
     break
 
 # Display chore list
 print("\n" + "=" * 50)
-print("   DORM ROOM -- CHORE LIST")
+print("DORM ROOM -- CHORE LIST")
 print("=" * 50)
 for i in range(len(chore_names)):
     print(f"{i + 1}. {chore_names[i]:<25} [{chore_frequency[i]}]")
@@ -62,16 +54,24 @@ allowed_not_done = {"not done", "not_done", "notdone", "n", "no", "incomplete"}
 for chore_slot in range(1, 5):
     print(f"\n--- CHORE {chore_slot} ---")
 
-    # Chore number loop (0 to skip), using integer validation (allows multi-digit)
+    # Chore number loop (0 to skip) - single digit only
     while True:
-        raw = input(f"Chore number (0 to skip) — enter an integer between 1 and {len(chore_names)}: ").strip()
+        raw = input(f"Chore number (0 to skip): ").strip()
         if raw == "":
-            print(f"Input cannot be empty. Enter 0 to skip or an integer between 1 and {len(chore_names)}.")
+            print(f"Input cannot be empty. Enter 0 to skip or a single digit between 1 and {len(chore_names)}.")
+            continue
+        # Check if input contains only digits
+        if not raw.isdigit():
+            print("Invalid input. Please enter only a single number (0 to skip or a chore number).")
+            continue
+        # Check if it's a single digit
+        if len(raw) != 1:
+            print(f"Chore number must be a single digit only. Enter 0 to skip or a digit between 1 and {len(chore_names)}.")
             continue
         try:
             num = int(raw)
         except ValueError:
-            print("Invalid input. Please enter an integer (0 to skip or a chore number).")
+            print("Invalid input. Please enter a single digit (0 to skip or a chore number).")
             continue
         if num == 0:
             chore_number = 0
@@ -79,18 +79,26 @@ for chore_slot in range(1, 5):
         if 1 <= num <= len(chore_names):
             chore_number = num
             break
-        print(f"Invalid chore number. Enter 0 to skip or an integer between 1 and {len(chore_names)}.")
+        print(f"Invalid chore number. Enter 0 to skip or a digit between 1 and {len(chore_names)}.")
 
     if chore_number == 0:
-        print(f"Chore {chore_slot} : skipped (chore = 0)")
+        print(f"Chore number (0 to skip): 0")
         continue
 
-    # Roommate name (non-empty)
+    # Roommate name (letters only, no spaces, no numbers)
     while True:
         roommate_name = input("Roommate name: ").strip()
-        if roommate_name != "":
-            break
-        print("Roommate name cannot be empty. Please enter a name.")
+        if roommate_name == "":
+            print("Roommate name cannot be empty. Please enter a name.")
+            continue
+        if " " in roommate_name:
+            print("Roommate name cannot contain spaces. Please enter a name without spaces.")
+            continue
+        # Check if input contains only letters
+        if not roommate_name.isalpha():
+            print("Roommate name can only contain letters. Please enter a valid name.")
+            continue
+        break
 
     # Status (validated, case-insensitive)
     while True:
@@ -126,10 +134,11 @@ else:
     room_status = "NEEDS CATCHING UP!"
 
 # Print formatted chore report
-print("\n" + "=" * 45)
-print("ROOM " + str(room_number) + " -- WEEKLY CHORE REPORT")
-print("=" * 45)
-print(f"Room Monitor:{room_monitor}\n")
+print("\n" + "=" * 50)
+print(f"ROOM {room_number} -- WEEKLY CHORE REPORT")
+print("=" * 50)
+print(f"Room Monitor:{room_monitor}")
+print("-" * 50)
 
 for i in range(len(assigned_chores)):
     chore_num = assigned_chores[i]
@@ -138,12 +147,12 @@ for i in range(len(assigned_chores)):
     roommate = assigned_roommates[i]
     status = assigned_status[i]
 
-    print(f"[{i + 1}] {chore_name:<25} [{chore_freq}]")
+    print(f"[{i + 1}] {chore_name:<24} [{chore_freq}]")
     print(f"    Roommate:{roommate}")
-    print(f"    Status:{status}\n")
+    print(f"    Status:{status}")
 
-print("=" * 45)
+print("-" * 50)
 print(f"Completed:{completed_count} out of {total_assigned} assigned")
 print(f"Completion Rate:{completion_rate}%")
 print(f"Room Status:{room_status}")
-print("=" * 45)
+print("=" * 50)
