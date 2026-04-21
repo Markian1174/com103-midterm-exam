@@ -1,0 +1,1 @@
+The Dorm Room Chore Management System is a streamlined application designed to track and coordinate communal living responsibilities. The program begins by capturing essential administrative details, such as the room number and the assigned monitor’s name, before presenting an organized schedule of available tasks.
